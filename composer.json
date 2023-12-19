@@ -1,0 +1,16 @@
+{
+    "name": "thoma/phppiggy",
+    "type": "project",
+    "authors": [
+        {
+            "name": "tom"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/Framework",
+            "App\\": "src/App"
+        }
+    }
+}
