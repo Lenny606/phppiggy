@@ -5,5 +5,5 @@
 
 <?php
 //passed as extracted value from array in render method
-echo $title;
+echo escape($title);
 

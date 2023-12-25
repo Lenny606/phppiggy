@@ -10,12 +10,19 @@ use Framework\App;
 use App\Controllers\HomeController;
 use App\Controllers\AboutController;
 
+//import function from file
+use function App\Config\registerRoutes;
 
 $app = new App();
+//use routes function to register routes - new way
+//setup function path in composer autoload manually , doesnt work same as with classes
+//then run cmd composer dump-autoload
+registerRoutes($app);
 
-//register paths and controller
-$app->get("/home", [HomeController::class, 'home']);
-$app->get("/about", [AboutController::class, 'about']);
-//$app->get("/about");
+
+//register paths and controller - old way directly in bootstrap
+//$app->get("/home", [HomeController::class, 'home']);
+//$app->get("/about", [AboutController::class, 'about']);
+
 
 return $app;
