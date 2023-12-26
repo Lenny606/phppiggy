@@ -10,14 +10,15 @@ class App
 {
 
     private Router $router;
-
+    private Container $container;
 
     public function __construct()
     {
         $this->router = new Router();
+        $this->container = new Container();
     }
 
-    public function run() : void
+    public function run(): void
     {
         //extract path from url
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
