@@ -10,7 +10,11 @@ class Container
 
     private array $definitions = [];
 
-    public function addDefinitions(array $definitions) {
+    public function addDefinitions(array $newDefinitions)
+    {
+        //merge arrays with array_merge or spread operator
+//        $this->definitions = array_merge($this->definitions, $newDefinitions);
+        $this->definitions = [...$this->definitions, ...$newDefinitions];
 
     }
 }
