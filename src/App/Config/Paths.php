@@ -11,6 +11,8 @@ class Paths
      * set up into homecontroller
      */
     public const VIEW = __DIR__ . '/../views';
+    //points to the root
+    public const SOURCE = __DIR__ . '/../../';
 
     public function __construct()
     {

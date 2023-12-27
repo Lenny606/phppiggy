@@ -7,13 +7,14 @@ declare(strict_types = 1);
 require __DIR__ . '/../../vendor/autoload.php';
 
 use Framework\App;
+use App\Config\Paths;
 use App\Controllers\HomeController;
 use App\Controllers\AboutController;
 
 //import function from file
 use function App\Config\registerRoutes;
 
-$app = new App();
+$app = new App(Paths::SOURCE . 'App/container-definitions.php');
 //use routes function to register routes - new way
 //setup function path in composer autoload manually , doesnt work same as with classes
 //then run cmd composer dump-autoload
