@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Framework;
+
 use App\Controllers\HomeController;
 
 class Router
@@ -49,21 +50,24 @@ class Router
      * @param string $method
      * @return void
      */
-    public function dispatch(string $path, string $method): void
+    public function dispatch(string $path, string $method, Container $container = null): void
     {
         $path = $this->normalizePath($path);
         $method = strtoupper($method);
 
         //if path doesnt matches or method is not method skip processing
         foreach ($this->routes as $route) {
-            if(!preg_match("#^{$route['path']}$#", $path) || $route['method'] !== $method ){
+            if (!preg_match("#^{$route['path']}$#", $path) || $route['method'] !== $method) {
                 continue;
             }
             //destructuring array [HomeController:class, 'home']
             [$class, $function] = $route['controller'];
 
             //class has namespace , is possible to create instance
-            $controllerInstance = new $class;
+            //added container with reflection pattern
+            $controllerInstance = $container ?
+                $container->resolve($class) :
+                new $class;
 
             $controllerInstance->$function();
 

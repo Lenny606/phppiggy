@@ -28,7 +28,7 @@ class App
         //extract path from url
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
-        $this->router->dispatch($path, $method);
+        $this->router->dispatch($path, $method, $this->container);
     }
 
     public function get(string $route, array $controller): void
