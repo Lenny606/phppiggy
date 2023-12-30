@@ -14,12 +14,15 @@ use App\Config\Paths;
  */
 class HomeController
 {
-    private TemplateEngine $view;
 
-    public function __construct()
+
+    public function __construct(
+        //refactor using container, class is in contructor
+        private TemplateEngine $view
+    )
     {
-//        path is configured in Paths class
-        $this->view = new TemplateEngine(Paths::VIEW);
+       //path is configured in Paths class
+       // $this->view = new TemplateEngine(Paths::VIEW);
     }
 
     /**
@@ -29,7 +32,7 @@ class HomeController
     {
         //renders return value of the render method
         echo $this->view->render("index.php", [
-            'title' => 'Home'
+//            'title' => 'Home'
         ]);
     }
 }

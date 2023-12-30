@@ -13,12 +13,16 @@ use App\Controllers\AboutController;
 
 //import function from file
 use function App\Config\registerRoutes;
+use function App\Config\registerMiddleware;
 
 $app = new App(Paths::SOURCE . 'App/container-definitions.php');
 //use routes function to register routes - new way
 //setup function path in composer autoload manually , doesnt work same as with classes
 //then run cmd composer dump-autoload
 registerRoutes($app);
+
+//registering middlewares, setup autoload manually in composer and run ,composer dump-autoload,
+registerMiddleware($app);
 
 
 //register paths and controller - old way directly in bootstrap

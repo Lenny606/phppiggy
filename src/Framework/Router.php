@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace Framework;
 
 use App\Controllers\HomeController;
+use Framework\Contracts\MiddlewareInterface;
 
 class Router
 {
 
     //list of routes, default []
     private array $routes = [];
+
+    //router is responsible for middlewares
+    private array $middlewares = [];
 
     /**
      * @param string $method
@@ -69,9 +73,31 @@ class Router
                 $container->resolve($class) :
                 new $class;
 
-            $controllerInstance->$function();
+            //implements middleware
+            $action = fn() => $controllerInstance->$function();
 
+            foreach($this->middlewares as $middleware) {
+
+                //in array we have only names, needs to be instatiated (by container)
+                /** @var MiddlewareInterface $middlewareInstance */
+                $middlewareInstance = $container ?
+                    $container->resolve($middleware):
+                    new $middleware;
+
+                //overide action with MW + function
+                //controller is the last one
+                $action = fn() => $middlewareInstance->process($action);
+
+            }
+            $action();
+
+            return;
         }
+    }
+
+    public function addMiddleware(string $middleware): void
+    {
+        $this->middlewares[] = $middleware;
     }
 
 }

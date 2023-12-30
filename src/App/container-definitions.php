@@ -7,7 +7,7 @@ use App\Config\Paths;
 
 //return from file
 //factory functions as methods in assoc array
-//keys have to be unique
+//keys in array are most important and have to be unique
 return [
     TemplateEngine::class => fn() => new TemplateEngine(Paths::VIEW)
 ];

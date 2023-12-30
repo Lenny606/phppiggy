@@ -5,6 +5,9 @@ namespace Framework;
 
 class TemplateEngine
 {
+    //variable accessible for all templates
+    private array $globalTemplateData = [];
+
     public function __construct(
         private string $basePath
     )
@@ -22,6 +25,7 @@ class TemplateEngine
         //$data['title'] => $title = value
         //accessible in template
         extract($data, EXTR_OVERWRITE);
+        extract($this->globalTemplateData, EXTR_SKIP);
 
         //starts output buffer, we can manipulate before is rendered
         ob_start();
@@ -43,6 +47,10 @@ class TemplateEngine
 
     public function resolve(string $path){
         return "{$this->basePath}/{$path}";
+    }
+
+    public function addGlobal(string $key, mixed $value){
+        $this->globalTemplateData[$key] = $value;
     }
 
 }
