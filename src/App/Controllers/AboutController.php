@@ -19,9 +19,6 @@ class AboutController
 
     public function about()
     {
-        $this->view->render('about.php',
-            [
-                'about' => "ABOUT PAGe"
-            ]);
+        echo $this->view->render('about.php');
     }
 }
