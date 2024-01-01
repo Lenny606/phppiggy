@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Services\ValidatorService;
 use Framework\TemplateEngine;
 use App\Config\Paths;
 
@@ -9,5 +10,6 @@ use App\Config\Paths;
 //factory functions as methods in assoc array
 //keys in array are most important and have to be unique
 return [
-    TemplateEngine::class => fn() => new TemplateEngine(Paths::VIEW)
+    TemplateEngine::class => fn() => new TemplateEngine(Paths::VIEW),
+    ValidatorService::class => fn() => new ValidatorService()
 ];
