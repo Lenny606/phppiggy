@@ -18,7 +18,9 @@ class AuthController
 
     public function registerView()
     {
+        //send variables into template , new middleware for exposing errors in template
         echo $this->view->render('register.php');
+
     }
 
     //method responsible for processing form submission
@@ -26,6 +28,6 @@ class AuthController
     {
         //superglobal variable with stored values from post method
        //dd($_POST);
-        $this->validatorService->validateRegister();
+        $this->validatorService->validateRegister($_POST);
     }
 }

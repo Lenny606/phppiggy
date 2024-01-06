@@ -9,5 +9,16 @@ use RuntimeException;
 
 class ValidationException extends RuntimeException
 {
+//    override with custom code with constructor
+//set default value for 422 code
+    public function __construct(
+        public array $errors,
+        int          $code = 422
+    )
+    {
 
+        //call parent constructor with named argument
+        //throws exception, but it needs to have middleware -> validationExceptionMiddleware
+        parent::__construct(code: $code);
+    }
 }

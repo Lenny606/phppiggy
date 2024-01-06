@@ -14,12 +14,10 @@ use Framework\Exceptions\ValidationException;
 
 class Validator
 {
+    //stored rules parameters
+    private array $rulesPa = [];
     //stored validation rules
     private array $rules = [];
-
-    //stored validation errors
-
-
 
     /**
      * adding new rules
@@ -34,27 +32,37 @@ class Validator
 
     public function validate(array $formData, array $fields)
     {
+        //stored validation errors
         $errors = [];
         //validation for one field in each time
         //rules is [] array with multiple rules
         foreach ($fields as $fieldName => $rules) {
             foreach ($rules as $rule) {
+
+                //check if rule has parameters with ,:,
+                if(str_contains($rule, ':'))
+                {   //deconstruct
+                    [$rule, $ruleParam]= explode(":", $rule);
+                    $ruleParam = explode(',', $ruleParam);
+                }
+
                 //grabbing rule alias from array of stored rules and save in variable
                 $ruleValidator = $this->rules[$rule];
 
                 //run validation condition
-                if ($ruleValidator->validate($formData, $fieldName, [])) {
+                if ($ruleValidator->validate($formData, $fieldName, $ruleParam)) {
                     continue;
+                    //TODO remove else block if some errors happened
                 } else {
                     //store error in multidimensional array for each field in loop
                     //error are handled by middleware
-                   $errors[$fieldName][] = $ruleValidator->getMessage($formData, $fieldName, []);
+                    $errors[$fieldName][] = $ruleValidator->getMessage($formData, $fieldName);
                 }
             }
         }
 
-        if(count($errors) > 0){
-            throw new ValidationException();
+        if (count($errors) > 0) {
+            throw new ValidationException($errors);
         }
     }
 }
