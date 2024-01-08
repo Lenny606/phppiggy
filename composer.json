@@ -6,7 +6,9 @@
             "name": "tom"
         }
     ],
-    "require": {},
+    "require": {
+        "ext-pdo": "*"
+    },
     "autoload": {
         "psr-4": {
             "Framework\\": "src/Framework",

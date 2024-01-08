@@ -13,5 +13,9 @@ $config = http_build_query([
 ], arg_separator: ';');
 
 $dsn = "{$driver}:{$config}";
+$username = 'root';
+$password = '';
 
-echo $dsn;
+$db = new PDO($dsn,$username,$password);
+
+echo "connected to database";
