@@ -16,6 +16,9 @@ $dsn = "{$driver}:{$config}";
 $username = 'root';
 $password = '';
 
-$db = new PDO($dsn,$username,$password);
-
+try{
+    $db = new PDO($dsn, $username, $password);
+} catch (PDOException $e) {
+    die("Could not connect to dtb"); //stops the script
+}
 echo "connected to database";
