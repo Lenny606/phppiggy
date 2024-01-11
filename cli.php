@@ -32,10 +32,35 @@ use \Framework\Database;
 
 $db = new Database(
     'mysql',
-    ['host' => 'localhost','port' => 3306, 'dbname' => 'phppiggy'],
+    ['host' => 'localhost', 'port' => 3306, 'dbname' => 'phppiggy'],
     'root',
     ""
 );
+
+//TRANSACTION query example
+try {
+//    creates the transaction, everything under will be inside the transaction
+    $db->connection->beginTransaction();
+
+    $db->connection->query("INSERT INTO products VALUES (5, 'shirt')");
+
+    $item = "caps";
+    $search2 = "SELECT * FROM products WHERE name=:name";
+    $stmt = $db->connection->prepare($search2,);
+    $stmt->bindValue("name", $item, PDO::PARAM_STR);
+    $stmt->execute();
+
+    //if above code was successful, then its saved into database + End transaction
+    $db->connection->commit();
+} catch (Exception $e) {
+    //if fails, but check active transaction first to save rollbac
+    if ($db->connection->inTransaction()) {
+        $db->connection->rollback();
+    }
+
+    echo "Transaction failed: " . $e->getMessage();
+}
+
 
 echo "connected to database";
 
