@@ -7,7 +7,7 @@ use PDO, \PDOException;
 
 class Database
 {
-    public PDO $connection;
+    private PDO $connection;
     public function __construct(
         string $driver,
         array  $config,
@@ -25,5 +25,9 @@ class Database
             die('Cannot connect to database');
         }
         echo "Connected to database";
+    }
+
+    public function query(string $query){
+        $this->connection->query($query);
     }
 }

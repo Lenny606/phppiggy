@@ -37,7 +37,11 @@ $db = new Database(
     ""
 );
 
-//TRANSACTION query example
+//sql query from file and calls query from cli command
+$sqlFile = file_get_contents("./database.sql");
+$db->query($sqlFile);
+
+/*//TRANSACTION query example --- TESTING
 try {
 //    creates the transaction, everything under will be inside the transaction
     $db->connection->beginTransaction();
@@ -79,4 +83,4 @@ $stmt2->execute([
 ]);
 
 //here fetch mode overrides fetch mode above, this is normal
-var_dump($stmt->fetchAll(PDO::FETCH_OBJ));
+var_dump($stmt->fetchAll(PDO::FETCH_OBJ));*/
