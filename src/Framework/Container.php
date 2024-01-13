@@ -9,7 +9,7 @@ use ReflectionClass;
 use ReflectionNamedType;
 
 //job of the container is to store instructions for creating instances
-//isntruction refers to definitions -> outsourced in separate file
+//instruction refers to definitions -> outsourced in separate file
 class Container
 {
 
@@ -95,7 +95,7 @@ class Container
         //if id exits create instance from factory
         //items in array are factory functions which should be called
         $factory = $this->definitions[$id];
-        $dependency = $factory();
+        $dependency = $factory($this); //this == container instance passed to factory function
 
         //use resolved[] for singleton pattern
         $this->resolved[$id] =  $dependency;

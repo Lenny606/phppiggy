@@ -2,8 +2,10 @@
 declare(strict_types=1);
 
 use App\Services\ValidatorService;
+use App\Services\UserService;
 use Framework\Database;
 use Framework\TemplateEngine;
+use Framework\Container;
 use App\Config\Paths;
 
 
@@ -22,5 +24,10 @@ return [
         ],
         $_ENV['DB_USER'],
         $_ENV['DB_PASSWORD']
-    )
-];
+    ),
+    //accessing container from container with additional logic to get access to other instances
+    //this because services are not simple accessible with DI at the moment
+    UserService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new UserService($db);
+    }];

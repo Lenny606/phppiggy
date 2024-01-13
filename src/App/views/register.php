@@ -8,7 +8,7 @@
             <label class="block">
                 <span class="text-gray-700">Email address</span>
                 <input
-                        value="<?php echo escape($oldFormData['email'] ?? ""); ?>>"
+                        value="<?php echo escape($oldFormData['email'] ?? ""); ?>"
                         name="email"
                         type="email"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -24,7 +24,7 @@
             <label class="block">
                 <span class="text-gray-700">Age</span>
                 <input
-                        value="<?php echo escape($oldFormData['age'] ?? ""); ?>>"
+                        value="<?php echo escape($oldFormData['age'] ?? ""); ?>"
                         name="age"
                         type="number"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -46,12 +46,12 @@
                 >
                     <option value="USA" <?php echo escape($oldFormData['country'] === "USA" ? 'selected' : ""); ?>>USA
                     </option>
-                    <option value="Canada <?php echo escape($oldFormData['country'] === "Canada" ? 'selected' : ""); ?>">
+                    <option value="Canada" <?php echo escape($oldFormData['country'] === "Canada" ? 'selected' : ""); ?>>
                         Canada
                     </option>
-                    <option value="Mexico <?php echo escape($oldFormData['country'] === "Mexico" ? 'selected' : ""); ?>>"
-                    ">Mexico</option>
-                    <option value="Invalid">Invalid Country</option>
+                    <option value="Mexico" <?php echo escape($oldFormData['country'] === "Mexico" ? 'selected' : ""); ?>>
+                    Mexico</option>
+                    <option value="Invalid" selected>Invalid Country</option>
                 </select>
                 <?php if (array_key_exists("country", $errors)) : ?>
                     <div class="bg-gray-100 mt-2 p-2 text-red-500">
@@ -63,7 +63,7 @@
             <label class="block">
                 <span class="text-gray-700">Social Media URL</span>
                 <input
-                        value="<?php echo escape($oldFormData['social_media_url'] ?? ""); ?>>"
+                        value="<?php echo escape($oldFormData['social_media_url'] ?? ""); ?>"
                         name="social_media_url"
                         type="text"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -115,7 +115,7 @@
                                     name="terms_of_service"
                                     class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
                                     type="checkbox"
-                                <?php echo escape($oldFormData['terms_of_service'] ?? false ? "checked" : ""); ?>>"
+                                <?php echo escape($oldFormData['terms_of_service'] ?? false ? "checked" : ""); ?>
                             />
                             <span class="ml-2">I accept the terms of service.</span>
                         </label>

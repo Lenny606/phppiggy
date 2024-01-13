@@ -8,6 +8,7 @@ use PDO, \PDOException;
 class Database
 {
     private PDO $connection;
+    private \PDOStatement $statement;
     public function __construct(
         string $driver,
         array  $config,
@@ -27,7 +28,16 @@ class Database
         echo "Connected to database";
     }
 
-    public function query(string $query){
-        $this->connection->query($query);
+    public function query(string $query, array $parameters = []): self {
+
+        $this->statement = $this->connection->prepare($query);
+        $this->statement->execute($parameters);
+
+        return $this;
+    }
+
+    public function count(): int|null
+    {
+        return $this->statement->fetchColumn();
     }
 }
