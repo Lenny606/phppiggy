@@ -13,6 +13,8 @@ class Paths
     public const VIEW = __DIR__ . '/../views';
     //points to the root
     public const SOURCE = __DIR__ . '/../../';
+//    points to the env file
+    public const ROOT = __DIR__ . '/../../../';
 
     public function __construct()
     {

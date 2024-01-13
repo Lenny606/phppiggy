@@ -10,10 +10,15 @@ use Framework\App;
 use App\Config\Paths;
 use App\Controllers\HomeController;
 use App\Controllers\AboutController;
+//import variables as soon as possible in file
+use Dotenv\Dotenv;
 
 //import function from file
 use function App\Config\registerRoutes;
 use function App\Config\registerMiddleware;
+
+$dotenv = Dotenv::createImmutable(Paths::ROOT);
+$dotenv->load(); //loads the env file, varables accessible as super global $_ENV with help of the package
 
 $app = new App(Paths::SOURCE . 'App/container-definitions.php');
 //use routes function to register routes - new way

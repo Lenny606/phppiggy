@@ -24,17 +24,25 @@
 //}
 //echo "connected to database";
 
+require __DIR__ . '/vendor/autoload.php';
 include __DIR__ . "/src/Framework/Database.php";
 
+use App\Config\Paths;
 use \Framework\Database;
-
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(Paths::ROOT);
+$dotenv->load();
 //use the class
 
 $db = new Database(
-    'mysql',
-    ['host' => 'localhost', 'port' => 3306, 'dbname' => 'phppiggy'],
-    'root',
-    ""
+    $_ENV['DB_DRIVER'],
+    [
+        $_ENV['DB_HOST'],
+        $_ENV['DB_USER'],
+        $_ENV['DB_NAME']
+    ],
+    $_ENV['DB_USER'],
+    $_ENV['DB_PASSWORD']
 );
 
 //sql query from file and calls query from cli command
