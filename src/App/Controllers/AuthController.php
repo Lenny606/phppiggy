@@ -47,4 +47,26 @@ class AuthController
         //redirect to homepage
         redirectTo('/');
     }
+
+    public function login()
+    {
+        //variables from form in superGlobal
+        //validation for Form values
+        $this->validatorService->validateLogin($_POST);
+
+        //validation on dtb level
+        $this->userService->login($_POST);
+
+        //after successful login redirect
+        redirectTo("/");
+    }
+    public function logout()
+    {
+        //if user session is not in browser user is not logged in
+        $this->userService->logout();
+
+        redirectTo("/login");
+    }
+
+
 }

@@ -31,17 +31,29 @@ class App
         $this->router->dispatch($path, $method, $this->container);
     }
 
-    public function get(string $route, array $controller): void
+    public function get(string $route, array $controller): self //for chaining in Routes.php
     {
         $this->router->add("GET", $route, $controller);
-    }
-    public function post(string $route, array $controller): void
-    {
-        $this->router->add('POST', $route, $controller);
+        return $this;
     }
 
-    public function addMiddleware(string $middleware) : void
+    public function post(string $route, array $controller): self
+    {
+        $this->router->add('POST', $route, $controller);
+        return $this;
+    }
+
+    public function addMiddleware(string $middleware): self
     {
         $this->router->addMiddleware($middleware);
+
+        return $this;
+    }
+
+    public function addRouteMiddleware(string $middleware): self
+    {
+        $this->router->addRouteMiddleware($middleware);
+
+        return $this;
     }
 }

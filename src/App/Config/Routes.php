@@ -5,14 +5,25 @@ declare(strict_types=1);
 namespace App\Config;
 
 
+use App\Middleware\AuthenticationRequiredMiddleware;
+use App\Middleware\GuestOnlyMiddleware;
 use Framework\App;
 use App\Controllers\{AuthController, HomeController, AboutController};
 
 function registerRoutes(App $app)
 {
-    $app->get("/", [HomeController::class, 'home']);
+    /********
+     * GET  *
+     ********/
+    $app->get("/", [HomeController::class, 'home'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);
     $app->get("/about", [AboutController::class, 'about']);
-    $app->get("/register", [AuthController::class, 'registerView']);
-    $app->post("/register", [AuthController::class, 'register']);
-    $app->get("/login", [AuthController::class, 'loginView']);
+    $app->get("/register", [AuthController::class, 'registerView'])->addRouteMiddleware(GuestOnlyMiddleware::class);
+    $app->get("/login", [AuthController::class, 'loginView'])->addRouteMiddleware(GuestOnlyMiddleware::class);
+    $app->get("/logout", [AuthController::class, 'logoutView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
+
+    /********
+     * POST  *
+     ********/
+    $app->post("/register", [AuthController::class, 'register'])->addRouteMiddleware(GuestOnlyMiddleware::class);
+    $app->post("/login", [AuthController::class, 'login'])->addRouteMiddleware(GuestOnlyMiddleware::class);
 }

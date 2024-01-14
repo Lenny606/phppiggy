@@ -52,4 +52,14 @@ class ValidatorService
             'terms_of_service' => ['required'],
         ]);
     }
+
+    public function validateLogin(array $formData)
+    {
+        //dont validate entire form data, better field by field
+        //validation is in Validator class
+        $this->validator->validate($formData, [
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+    }
 }

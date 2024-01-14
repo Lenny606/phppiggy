@@ -12,7 +12,7 @@ class Router
     //list of routes, default []
     private array $routes = [];
 
-    //router is responsible for middlewares
+    //router is responsible for middlewares, MW accessible globally but can be restricted to one route
     private array $middlewares = [];
 
     /**
@@ -27,7 +27,12 @@ class Router
         $this->routes[] = [
             'path' => $route,
             'method' => strtoupper($method),
-            'controller' => $controller
+            'controller' => $controller,
+            //added option to use some MW only for specific routes
+            //adding in addRouteMiddleware method, execution in dispatch(
+            'middlewares' => [
+
+            ]
         ];
     }
 
@@ -76,7 +81,12 @@ class Router
             //implements middleware
             $action = fn() => $controllerInstance->$function();
 
-            foreach($this->middlewares as $middleware) {
+            //implements specific routes middleware
+            //orders matters, global MW have to be last
+            //all MW in one array
+            $allMiddleware = [...$route['middlewares'], ...$this->middlewares];
+
+            foreach($allMiddleware as $middleware) {
 
                 //in array we have only names, needs to be instatiated (by container)
                 /** @var MiddlewareInterface $middlewareInstance */
@@ -99,5 +109,10 @@ class Router
     {
         $this->middlewares[] = $middleware;
     }
-
+    public function addRouteMiddleware(string $middleware): void
+    {
+        //TODO check again why last route is used
+        $lastRouteKey = array_key_last($this->routes);
+        $this->routes[$lastRouteKey]['middlewares'][] = $middleware;
+    }
 }
