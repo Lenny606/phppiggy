@@ -8,7 +8,7 @@ namespace App\Config;
 use App\Middleware\AuthenticationRequiredMiddleware;
 use App\Middleware\GuestOnlyMiddleware;
 use Framework\App;
-use App\Controllers\{AuthController, HomeController, AboutController};
+use App\Controllers\{AuthController, HomeController, AboutController, TransactionController};
 
 function registerRoutes(App $app)
 {
@@ -20,6 +20,7 @@ function registerRoutes(App $app)
     $app->get("/register", [AuthController::class, 'registerView'])->addRouteMiddleware(GuestOnlyMiddleware::class);
     $app->get("/login", [AuthController::class, 'loginView'])->addRouteMiddleware(GuestOnlyMiddleware::class);
     $app->get("/logout", [AuthController::class, 'logoutView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
+    $app->get("/transaction", [TransactionController::class, 'createView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
 
     /********
      * POST  *
