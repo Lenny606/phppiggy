@@ -21,10 +21,13 @@ function registerRoutes(App $app)
     $app->get("/login", [AuthController::class, 'loginView'])->addRouteMiddleware(GuestOnlyMiddleware::class);
     $app->get("/logout", [AuthController::class, 'logoutView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
     $app->get("/transaction", [TransactionController::class, 'createView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
+    $app->get("/transaction", [TransactionController::class, 'createView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
 
     /********
      * POST  *
      ********/
     $app->post("/register", [AuthController::class, 'register'])->addRouteMiddleware(GuestOnlyMiddleware::class);
     $app->post("/login", [AuthController::class, 'login'])->addRouteMiddleware(GuestOnlyMiddleware::class);
+    $app->post("/transaction", [TransactionController::class, 'create'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
+
 }
