@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Services\TransactionService;
 use App\Services\ValidatorService;
 use App\Services\UserService;
 use Framework\Database;
@@ -30,4 +31,9 @@ return [
     UserService::class => function (Container $container) {
         $db = $container->get(Database::class);
         return new UserService($db);
-    }];
+    },
+    TransactionService::class => fn() => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new TransactionService($db);
+    }
+    ];
