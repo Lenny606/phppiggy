@@ -54,7 +54,13 @@ class Database
         return $this->statement->fetch();
     }
 
-/**
+    public function findAll() : array | false
+    {
+        return $this->statement->fetchAll();
+    }
+
+
+    /**
 * Retrieve the last inserted ID from the database connection.
 *
 * This method returns the last auto-generated ID that was inserted into the database.
