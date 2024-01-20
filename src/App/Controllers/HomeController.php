@@ -32,14 +32,26 @@ class HomeController
      */
     public function home()
     {
-        //get transactions via TransactionService and pass it to template
-        $transactions = $this->transactionService->getUserTransactions();
+        //pagination => logic can be handled by controller instead of service
+        $page = (int)($_GET['p'] ?? 1); //default is 1, cast as integer
+        $length = 3; //number of results hardcoded
+        $offset = ($page - 1) * $length; //in code first page is 0
+        $searchTerm = $_GET['s'];
 
+        //get transactions via TransactionService and pass it to template
+        $transactions = $this->transactionService->getUserTransactions(length: $length, offset: $offset);
 
         //renders return value of the render method
         echo $this->view->render("index.php", [
 //            'title' => 'Home',
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'currentPage' => $page,
+            'previousPage' => http_build_query(
+                [
+                    'p' => $page - 1,
+                    's' => $searchTerm
+                ])
+
         ]);
     }
 }

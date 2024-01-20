@@ -38,15 +38,26 @@ class TransactionService
      * This method queries the database to retrieve all transactions associated
      * with the currently authenticated user.
      *
+     * @param int $length
+     * @param int $offset
      * @return array|false An array of transactions if successful, or false
-     *
      */
-    public function getUserTransactions() : array | false
+    public function getUserTransactions(int $length, int $offset) : array | false
     {
+        //escaping function that allows searching for special chars
+        $searchTerm = addcslashes($_GET['s'] ?? "", '%_');
+
         $userTransactions = $this->db->query(
-            "SELECT * FROM transaction WHERE user_id = :user_id",
+            "SELECT
+            *,
+            DATE_FORMAT(date, '%Y-%m-%d') as formated_date
+            FROM transaction
+            WHERE user_id = :user_id
+            AND description LIKE :description
+            LIMIT {$length} OFFSET {$offset}",
             [
-                'user_id' => $_SESSION['user_id']
+                'user_id' => $_SESSION['user_id'],
+                'description' => "%{$searchTerm}%",
             ]
         );
         return $userTransactions->findAll();
