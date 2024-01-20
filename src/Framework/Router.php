@@ -24,6 +24,8 @@ class Router
     public function add(string $method, string $route, array $controller): void
     {
         $route = $this->normalizePath($route);
+
+        $regexPath = preg_replace('#{[^/]+}#', '([^/]+)', $route);
         $this->routes[] = [
             'path' => $route,
             'method' => strtoupper($method),
@@ -32,7 +34,8 @@ class Router
             //adding in addRouteMiddleware method, execution in dispatch(
             'middlewares' => [
 
-            ]
+            ],
+            'regexPath' => $regexPath
         ];
     }
 
@@ -62,13 +65,28 @@ class Router
     public function dispatch(string $path, string $method, Container $container = null): void
     {
         $path = $this->normalizePath($path);
-        $method = strtoupper($method);
 
-        //if path doesnt matches or method is not method skip processing
+        //checking for DELETE method which is POST overridden
+        $method = strtoupper($_POST['_METHOD'] ?? $method);
+
+        //if path doesnt matches or method is not method skip processing, paramValues are creates dynamically
         foreach ($this->routes as $route) {
-            if (!preg_match("#^{$route['path']}$#", $path) || $route['method'] !== $method) {
+            if (!preg_match(
+                "#^{$route['regexPath']}$#",
+                $path, $paramValues) || $route['method'] !== $method
+            ) {
                 continue;
             }
+
+            //extract the values to grab the parameters value from the route and combine into new array
+            array_shift($paramValues);
+            preg_match_all('#{([^/]+)}#', $route['path'], $paramKeys);
+            $paramKeys = $paramKeys[1];
+            $params = array_combine(
+                $paramKeys,
+                $paramValues
+            );
+
             //destructuring array [HomeController:class, 'home']
             [$class, $function] = $route['controller'];
 
@@ -79,7 +97,7 @@ class Router
                 new $class;
 
             //implements middleware
-            $action = fn() => $controllerInstance->$function();
+            $action = fn() => $controllerInstance->{$function}($params);
 
             //implements specific routes middleware
             //orders matters, global MW have to be last

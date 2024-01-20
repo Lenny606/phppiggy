@@ -42,12 +42,12 @@ class TransactionService
      * @param int $offset
      * @return array|false An array of transactions if successful, or false
      */
-    public function getUserTransactions(int $length, int $offset) : array | false
+    public function getUserTransactions(int $length, int $offset): array|false
     {
         //escaping function that allows searching for special chars
         $searchTerm = addcslashes($_GET['s'] ?? "", '%_');
 
-        $params =  [
+        $params = [
             'user_id' => $_SESSION['user_id'],
             'description' => "%{$searchTerm}%",
         ];
@@ -61,7 +61,7 @@ class TransactionService
             WHERE user_id = :user_id
             AND description LIKE :description
             LIMIT {$length} OFFSET {$offset}",
-           $params
+            $params
         );
 
         //query returns number of results
@@ -78,6 +78,59 @@ class TransactionService
         return [
             $userTransactions->findAll(),
             $transactionCount
-            ];
+        ];
+    }
+
+    public function getUserTransaction(string $userTransactionId)
+    {
+        $userTransaction = $this->db->query(
+            "SELECT *, DATE_FORMAT(date, '%Y-%m-%d') as formated_date
+                       FROM transactions
+                       WHERE user_id = :userId
+                       AND id=:userTransactionId",
+            [
+                'userTransactionId' => $userTransactionId,
+                'userId' => $_SESSION['user']
+            ]
+        )->find();
+
+        return $userTransaction;
+    }
+
+    public function updateTransaction(array $formData, int $id)
+    {
+
+        $formatedDate = "{$formData['date']} 00:00:00";
+
+        $this->db->query(
+            "UPDATE transactions
+                    SET description=:description,
+                        amount=:amount,
+                        data=:date
+                       WHERE user_id = :user_id
+                       AND id=:id",
+            [
+                'description' => $formData['description'],
+                'amount' => $formData['amount'],
+                'date' => $formatedDate,
+                'id' => $id,
+                'user_id' => $_SESSION['user']
+            ]);
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function deleteTransaction(int $id) :void
+    {
+        $this->db->query(
+            "DELETE FROM transactions
+                    WHERE user_id = :user_id
+                    AND id=:id",
+            [
+                'id' => $id,
+                'user_id' => $_SESSION['user']
+            ]);
     }
 }

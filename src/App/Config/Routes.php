@@ -22,12 +22,18 @@ function registerRoutes(App $app)
     $app->get("/logout", [AuthController::class, 'logoutView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
     $app->get("/transaction", [TransactionController::class, 'createView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
     $app->get("/transaction", [TransactionController::class, 'createView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
+    $app->get("/transaction/{transactionId}", [TransactionController::class, 'editView'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
 
     /********
      * POST  *
      ********/
     $app->post("/register", [AuthController::class, 'register'])->addRouteMiddleware(GuestOnlyMiddleware::class);
     $app->post("/login", [AuthController::class, 'login'])->addRouteMiddleware(GuestOnlyMiddleware::class);
-    $app->post("/transaction", [TransactionController::class, 'create'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
+    $app->post("/transaction", [TransactionController::class, 'create'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);
+    $app->post("/transaction/{transactionId}", [TransactionController::class, 'edit'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
 
+    /********
+     * DELETE  *
+     ********/
+    $app->delete("/transaction/{transactionId}", [TransactionController::class, 'delete'])->addRouteMiddleware(AuthenticationRequiredMiddleware::class);;
 }

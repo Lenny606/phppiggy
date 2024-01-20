@@ -43,6 +43,12 @@ class App
         return $this;
     }
 
+    public function delete(string $route, array $controller): self
+    {
+        $this->router->add('DELETE', $route, $controller);
+        return $this;
+    }
+
     public function addMiddleware(string $middleware): self
     {
         $this->router->addMiddleware($middleware);
