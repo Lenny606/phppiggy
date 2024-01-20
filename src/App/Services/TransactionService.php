@@ -47,6 +47,12 @@ class TransactionService
         //escaping function that allows searching for special chars
         $searchTerm = addcslashes($_GET['s'] ?? "", '%_');
 
+        $params =  [
+            'user_id' => $_SESSION['user_id'],
+            'description' => "%{$searchTerm}%",
+        ];
+
+
         $userTransactions = $this->db->query(
             "SELECT
             *,
@@ -55,11 +61,23 @@ class TransactionService
             WHERE user_id = :user_id
             AND description LIKE :description
             LIMIT {$length} OFFSET {$offset}",
-            [
-                'user_id' => $_SESSION['user_id'],
-                'description' => "%{$searchTerm}%",
-            ]
+           $params
         );
-        return $userTransactions->findAll();
+
+        //query returns number of results
+        $transactionCount = $this->db->query(
+            "SELECT
+            COUNT(*)    
+            FROM transaction
+            WHERE user_id = :user_id
+            AND description LIKE :description",
+            $params
+        )->count();
+
+
+        return [
+            $userTransactions->findAll(),
+            $transactionCount
+            ];
     }
 }
