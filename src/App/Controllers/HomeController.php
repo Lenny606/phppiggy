@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\LoggerService;
 use App\Services\TransactionService;
 use Framework\TemplateEngine;
 use App\Config\Paths;
@@ -20,7 +21,8 @@ class HomeController
     public function __construct(
         //refactor using container, class is in contructor
         private TemplateEngine     $view,
-        private TransactionService $transactionService
+        private TransactionService $transactionService,
+        private LoggerService $loggerService
     )
     {
         //path is configured in Paths class
@@ -54,6 +56,8 @@ class HomeController
                     's' => $searchTerm
                 ]),
             $pages);
+
+        $this->loggerService->info("test");
 
         //renders return value of the render method
         echo $this->view->render("index.php", [

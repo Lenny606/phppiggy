@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\LoggerService;
 use App\Services\ValidatorService;
 use App\Services\UserService;
 use Framework\TemplateEngine;
@@ -12,7 +13,8 @@ class AuthController
     public function __construct(
         private TemplateEngine $view,
         private ValidatorService $validatorService,
-        private UserService $userService
+        private UserService $userService,
+        private LoggerService $loggerService
     )
     {
 
@@ -27,6 +29,7 @@ class AuthController
 
     public function loginView()
     {
+        $this->loggerService->info("Login opened", ["date" => date("Y-m-d H:i:s")]);
         //send variables into template , new middleware for exposing errors in template
         echo $this->view->render('login.php');
 

@@ -9,10 +9,12 @@ class LoggerService implements LoggerInterface
 {
     //TODO should be in constructor
     private string $logFilePath;
+    private string $fileName;
     public function __construct(
 
     ){
-        $this->logFilePath = '/src/App/logs/app.txt';
+        $this->logFilePath = $_SERVER['DOCUMENT_ROOT'].'/logs/';
+        $this->fileName = 'info-logs.txt';
     }
 
     public function emergency($message, array $context = array())
@@ -61,6 +63,10 @@ class LoggerService implements LoggerInterface
         $logEntry = sprintf("[%s] %s: %s\n", $level, $message, json_encode($context));
 
         // Přidání záznamu do souboru
-        file_put_contents($this->logFilePath, $logEntry, FILE_APPEND);
+        if(!is_dir($this->logFilePath)){
+            mkdir($this->logFilePath, 0777, true);
+            touch($this->logFilePath . $this->fileName);
+        }
+        file_put_contents($this->logFilePath.$this->fileName, $logEntry, FILE_APPEND);
     }
 }
