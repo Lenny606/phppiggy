@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Framework\TemplateEngine;
-use App\Services\{TransactionService};
+use App\Services\{ReceiptService, TransactionService};
 
 class ReceiptController
 {
     public function __construct(
         private TemplateEngine $view,
-        private TransactionService $transactionService
+        private TransactionService $transactionService,
+        private ReceiptService $receiptService
     ) {
     }
 
@@ -33,6 +34,12 @@ class ReceiptController
         if (!$transaction) {
             redirectTo("/");
         }
+
+        //SUPER GLOBAL $_FILES CONTAINS INFORMATION FROM POST
+        $file = $_FILES['receipt'] ?? null;
+        $this->receiptService->validateFile($file);
+
+        $this->receiptService->uploadFile($file);
 
         redirectTo("/");
     }

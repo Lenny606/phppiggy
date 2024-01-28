@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Services\LoggerService;
+use App\Services\ReceiptService;
 use App\Services\TransactionService;
 use App\Services\ValidatorService;
 use App\Services\UserService;
@@ -37,5 +38,10 @@ return [
     TransactionService::class => function (Container $container) {
         $db = $container->get(Database::class);
         return new TransactionService($db);
+    },
+
+    ReceiptService::class => function (Container $container) {
+        $db = $container->get(Database::class);
+        return new ReceiptService($db);
     }
-    ];
+];

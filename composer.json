@@ -8,7 +8,10 @@
     ],
     "require": {
         "ext-pdo": "*",
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "doctrine/orm": "^2.17",
+        "doctrine/dbal": "^3.8",
+        "contributte/console": "^0.10.1"
     },
     "autoload": {
         "psr-4": {
@@ -21,7 +24,6 @@
         ]
     },
     "scripts": {
-
         "phppiggy": "php cli.php"
     }
 }
