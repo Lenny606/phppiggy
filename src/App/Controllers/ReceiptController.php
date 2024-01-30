@@ -39,7 +39,8 @@ class ReceiptController
         $file = $_FILES['receipt'] ?? null;
         $this->receiptService->validateFile($file);
 
-        $this->receiptService->uploadFile($file);
+        //uploads and saves to transaction
+        $this->receiptService->uploadFile($file, $transaction['id']);
 
         redirectTo("/");
     }

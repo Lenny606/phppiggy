@@ -82,7 +82,7 @@ class ReceiptService
      * @param array|null $file The validated file information from the $_FILES superglobal.
      * @throws ValidationException|\Exception If the upload fails.
      */
-    public function uploadFile(?array $file): void
+    public function uploadFile(?array $file, int $transactionId): void
     {
         $orignalName = $file['name'];
         $fileExtension = pathinfo($orignalName, PATHINFO_EXTENSION);
@@ -98,5 +98,15 @@ class ReceiptService
                 'receipt' => "Upload failed"
             ]);
         }
+
+        $this->database->query("
+        INSERT INTO 'receipts' (
+        transaction_id, original_filename, storage_filename, media_type
+        ) VALUES (:transaction_id, :original_filename, :storage_filename,:media_type)", [
+           'transaction_id' => $transactionId,
+            'original_filename' => $file['name'],
+            'storage_filename' => $newFileName,
+            'media_type' => $file['type'],
+        ]);
     }
 }

@@ -64,6 +64,14 @@ class TransactionService
             $params
         );
 
+        $userTransactions = array_map(
+            function (array $transaction) {
+            $transaction['receipts'] = $this->db->query(
+                "SELECT * FROM receipts WHERE transaction_id = :transaction_id",
+                ['transaction_id' => $transaction['id']])->findAll();
+            return $transaction;
+        }, $userTransactions);
+
         //query returns number of results
         $transactionCount = $this->db->query(
             "SELECT
@@ -122,7 +130,7 @@ class TransactionService
      * @param int $id
      * @return void
      */
-    public function deleteTransaction(int $id) :void
+    public function deleteTransaction(int $id): void
     {
         $this->db->query(
             "DELETE FROM transactions
