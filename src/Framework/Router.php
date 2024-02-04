@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Framework;
 
 use App\Controllers\HomeController;
+use Doctrine\DBAL\Connection;
 use Framework\Contracts\MiddlewareInterface;
 
 class Router
@@ -14,6 +15,10 @@ class Router
 
     //router is responsible for middlewares, MW accessible globally but can be restricted to one route
     private array $middlewares = [];
+
+    //resposible for error handling , fe 404
+    private array $errorHandler = [];
+
 
     /**
      * @param string $method
@@ -121,6 +126,9 @@ class Router
 
             return;
         }
+
+        //if page is not found instead of blank page render 404
+        $this->dispatchNotFound($container);
     }
 
     public function addMiddleware(string $middleware): void
@@ -132,5 +140,32 @@ class Router
         //TODO check again why last route is used
         $lastRouteKey = array_key_last($this->routes);
         $this->routes[$lastRouteKey]['middlewares'][] = $middleware;
+    }
+
+    public function setErrorHandler(array $controller): void
+    {
+        //in format [class, function]
+        $this->errorHandler = $controller;
+    }
+
+    //method responsible for creating instances of errorHandler
+    //DI needed but optional
+    public function dispatchNotFound(?Container $container): void{
+
+        //deconstruct
+        [$class, $function] = $this->errorHandler;
+
+        $controllerInstance = $container ? $container->resolve($class) : new $class;
+
+        //invoke function
+        $action = fn() => $controllerInstance->$function();
+
+        foreach ($this->middlewares as $middleware){
+            $middlewareInstance = $container ? $container->resolve($middleware) : new $middleware;
+            $action = fn() => $middlewareInstance->process($action);
+        }
+
+        //calls action
+        $action();
     }
 }
