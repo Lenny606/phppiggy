@@ -103,10 +103,62 @@ class ReceiptService
         INSERT INTO 'receipts' (
         transaction_id, original_filename, storage_filename, media_type
         ) VALUES (:transaction_id, :original_filename, :storage_filename,:media_type)", [
-           'transaction_id' => $transactionId,
+            'transaction_id' => $transactionId,
             'original_filename' => $file['name'],
             'storage_filename' => $newFileName,
             'media_type' => $file['type'],
         ]);
     }
+
+    public function getReceipt(string $id)
+    {
+
+        $receipt = $this->database->query(
+            "SELECT * FROM 'receipts' WHERE id = :id",
+            [
+                'id' => $id
+            ])->find();
+
+        return $receipt;
+    }
+
+    public function read(array $receipt)
+    {
+        //check if file exists, should be reading if not, with file_exists() function
+        $filePath = Paths::STORAGE_UPLOADS . '/' . $receipt['storage_filename'];
+
+        if (!file_exists($filePath)) {
+            redirectTo('/');
+        }
+
+        //then proceed with download
+        //header needs to be modified, by default PHP is sending html, we want different file
+        //content-disposition has two values : 'attachment' and 'inline'
+        header("Content-Disposition: inline;filename=${receipt['original_filename']}");
+        header("Content-Type: ${receipt['media_type']}");
+
+        //actual file should be sent in body, use readfile() function
+        readfile($filePath);
+
+    }
+
+    /**
+     * Delete file from database and from filestorage
+     *
+     * @param array $receipt
+     * @return mixed
+     */
+    public function delete(array $receipt): void
+    {
+        $filePath = Paths::STORAGE_UPLOADS . '/' . $receipt['storage_filename'];
+        //delete file with unlink(
+        unlink($filePath);
+
+        $this->database->query(
+            "DELETE FROM 'receipts' WHERE id = :id",
+            [
+                'id' => $receipt['id'],
+            ]);
+    }
+
 }

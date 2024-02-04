@@ -39,7 +39,7 @@ class UserService
                 'password' => password_hash($formData['password'], PASSWORD_BCRYPT, ['cost' => 12]),
                 'age' => $formData['age'],
                 'country' => $formData['country'],
-                'social_media_url' => $formData['socialMediaUrl']
+                'social_media_url' => $formData['social_media_url']
             ]);
 
         //after registration user should be authenticated and redirected to homepage (same as login)

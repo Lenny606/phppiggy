@@ -16,10 +16,12 @@ class Database
         string $password
     )
     {
+//        dd($config);
         $config = http_build_query(data: $config, arg_separator: ';');
 
-        $dsn = "{$driver}:{$config}";
+//        $dsn = "{$driver}:{$config}";
 
+        $dsn = 'mysql:host=localhost;dbname=phppiggy';
         try {
             $this->connection = new PDO(
                 $dsn,
@@ -33,7 +35,7 @@ class Database
         }catch (PDOException $e) {
             die('Cannot connect to database');
         }
-        echo "Connected to database";
+
     }
 
     public function query(string $query, array $parameters = []): self {

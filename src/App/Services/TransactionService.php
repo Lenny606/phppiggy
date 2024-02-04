@@ -62,7 +62,7 @@ class TransactionService
             AND description LIKE :description
             LIMIT {$length} OFFSET {$offset}",
             $params
-        );
+        )->findAll();
 
         $userTransactions = array_map(
             function (array $transaction) {

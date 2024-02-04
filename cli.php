@@ -46,6 +46,7 @@ $db = new Database(
 );
 
 //sql query from file and calls query from cli command
+//cmd : composer phppiggy
 $sqlFile = file_get_contents("./database.sql");
 $db->query($sqlFile);
 

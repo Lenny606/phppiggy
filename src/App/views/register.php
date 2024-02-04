@@ -45,13 +45,13 @@
                         name="country"
                         class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 >
-                    <option value="USA" <?php echo escape($oldFormData['country'] === "USA" ? 'selected' : ""); ?>>
-                        USA
+                    <option value="USA" <?php echo escape(($oldFormData['country'] ?? '') === "USA" ? "selected" : ""); ?>>
+                    USA
                     </option>
-                    <option value="Canada" <?php echo escape($oldFormData['country'] === "Canada" ? 'selected' : ""); ?>>
+                    <option value="Canada" <?php echo escape(($oldFormData['country'] ?? '') === "Canada" ? "selected" : ""); ?>>
                         Canada
                     </option>
-                    <option value="Mexico" <?php echo escape($oldFormData['country'] === "Mexico" ? 'selected' : ""); ?>>
+                    <option value="Mexico" <?php echo escape(($oldFormData['country'] ?? '') === "Mexico" ? "selected" : ""); ?>>
                     Mexico</option>
                     <option value="Invalid" selected>Invalid Country</option>
                 </select>

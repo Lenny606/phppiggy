@@ -39,6 +39,7 @@ class Validator
         foreach ($fields as $fieldName => $rules) {
             foreach ($rules as $rule) {
 
+                $ruleParam = [];
                 //check if rule has parameters with ,:,
                 if(str_contains($rule, ':'))
                 {   //deconstruct
@@ -56,7 +57,7 @@ class Validator
                 } else {
                     //store error in multidimensional array for each field in loop
                     //error are handled by middleware
-                    $errors[$fieldName][] = $ruleValidator->getMessage($formData, $fieldName);
+                    $errors[$fieldName][] = $ruleValidator->getMessage($formData, $fieldName, $ruleParam );
                 }
             }
         }
