@@ -24,7 +24,7 @@ function escape(mixed $value): string
 }
 
 //get request, needs header, status code
-//exit stops the script to prevent errors...
+//exit stops the script to prevent errors.
 function redirectTo(string $path){
     header("Location: {$path}");
     http_response_code(Http::REDIRECT_STATUS_CODE);
