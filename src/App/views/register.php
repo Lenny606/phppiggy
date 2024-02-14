@@ -4,6 +4,9 @@
     >
         <!--    define path in action + method-->
         <form action="/register" method="POST" class="grid grid-cols-1 gap-6">
+<!--            CAPTCHA-->
+            <div class="g-recaptcha" data-sitekey="6Lf-NnMpAAAAAGGgGX3v2xrC04st1DdhqzrX-IwK"></div>
+
             <?php include $this->resolve("partials/_csrf.php"); ?>
             <!-- Email -->
             <label class="block">
@@ -137,4 +140,5 @@
             </button>
         </form>
     </section>
+
 <?php include $this->resolve('/partials/_footer.php'); ?>

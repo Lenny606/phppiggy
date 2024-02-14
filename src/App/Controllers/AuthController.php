@@ -38,6 +38,36 @@ class AuthController
     //method responsible for processing form submission
     public function register()
     {
+        // Verify reCAPTCHA
+        $recaptcha_secret = "6Lf-NnMpAAAAAOAKbe_fwqpez7a5Kxopr2MiNRMJ";
+        $response = $_POST['g-recaptcha-response'];
+
+        $recaptcha_url = "https://www.google.com/recaptcha/api/siteverify";
+        $recaptcha_data = [
+            'secret' => $recaptcha_secret,
+            'response' => $response,
+        ];
+
+        $options = [
+            'http' => [
+                'method' => 'POST',
+                'content' => http_build_query($recaptcha_data),
+                'header' => 'Content-Type: application/x-www-form-urlencoded',
+            ],
+        ];
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($recaptcha_url, false, $context);
+        $recaptcha_result = json_decode($result);
+
+        if ($recaptcha_result->success) {
+            // reCAPTCHA verification passed, process the registration
+            echo "Registration successful!";
+        } else {
+            // reCAPTCHA verification failed
+            echo "reCAPTCHA verification failed. Please try again.";
+        }
+
         //superglobal variable with stored values from post method
        //dd($_POST);
         $this->validatorService->validateRegister($_POST);
