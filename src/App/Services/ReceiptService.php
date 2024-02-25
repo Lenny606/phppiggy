@@ -28,6 +28,8 @@ class ReceiptService
      */
     public function validateFile(?array $file)
     {
+
+
         //validation , superglobal contains errors
         if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
             throw new ValidationException(
@@ -84,6 +86,7 @@ class ReceiptService
      */
     public function uploadFile(?array $file, int $transactionId): void
     {
+        dd($file);
         $orignalName = $file['name'];
         $fileExtension = pathinfo($orignalName, PATHINFO_EXTENSION);
 

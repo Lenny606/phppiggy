@@ -48,7 +48,7 @@ class TransactionService
         $searchTerm = addcslashes($_GET['s'] ?? "", '%_');
 
         $params = [
-            'user_id' => $_SESSION['user_id'],
+            'user_id' => $_SESSION['user'],
             'description' => "%{$searchTerm}%",
         ];
 
@@ -57,7 +57,7 @@ class TransactionService
             "SELECT
             *,
             DATE_FORMAT(date, '%Y-%m-%d') as formated_date
-            FROM transaction
+            FROM transactions
             WHERE user_id = :user_id
             AND description LIKE :description
             LIMIT {$length} OFFSET {$offset}",
@@ -76,7 +76,7 @@ class TransactionService
         $transactionCount = $this->db->query(
             "SELECT
             COUNT(*)    
-            FROM transaction
+            FROM transactions
             WHERE user_id = :user_id
             AND description LIKE :description",
             $params
@@ -84,7 +84,7 @@ class TransactionService
 
 
         return [
-            $userTransactions->findAll(),
+            $userTransactions,
             $transactionCount
         ];
     }

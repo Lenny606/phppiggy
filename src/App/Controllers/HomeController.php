@@ -38,44 +38,44 @@ class HomeController
         $page = (int)($_GET['p'] ?? 1); //default is 1, cast as integer
         $length = 3; //number of results hardcoded
         $offset = ($page - 1) * $length; //in code first page is 0
-        $searchTerm = $_GET['s'];
+        $searchTerm = $_GET['s'] ?? null;
 
         //get transactions via TransactionService and pass it to template, deconstructint results from service
-//        [$transactions, $transactionsCount] = $this->transactionService->getUserTransactions(length: $length, offset: $offset);
+        [$transactions, $transactionsCount] = $this->transactionService->getUserTransactions(length: $length, offset: $offset);
 //
 //        //calculate last page
-//        $lastPage = ceil($transactionsCount / $length);
-//
-//        //page Links, range() creates array
-//        $pages = $lastPage ? range(1, $lastPage) : [];
-//
-//        $pageLinks = array_map(
-//            fn($pageNumber) => http_build_query(
-//                [
-//                    'p' => $pageNumber,
-//                    's' => $searchTerm
-//                ]),
-//            $pages);
+        $lastPage = ceil($transactionsCount / $length);
+
+        //page Links, range() creates array
+        $pages = $lastPage ? range(1, $lastPage) : [];
+
+        $pageLinks = array_map(
+            fn($pageNumber) => http_build_query(
+                [
+                    'p' => $pageNumber,
+                    's' => $searchTerm
+                ]),
+            $pages);
 
         $this->loggerService->info("test");
 
         //renders return value of the render method
         echo $this->view->render("index.php", [
 //            'title' => 'Home',
-       //     'transactions' => $transactions,
+            'transactions' => $transactions,
             'currentPage' => $page,
             'previousPageQuery' => http_build_query(
                 [
                     'p' => $page - 1,
                     's' => $searchTerm
                 ]),
-        //    'lastPage' => $lastPage,
+           'lastPage' => $lastPage,
             'nextPageQuery' => http_build_query(
                 [
                     'p' => $page + 1,
                     's' => $searchTerm
                 ]),
-        //    'pageLinks' => $pageLinks,
+                'pageLinks' => $pageLinks,
             'searchTerm' => $searchTerm
 
         ]);
