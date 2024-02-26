@@ -18,7 +18,8 @@ class ReceiptController
 
     public function uploadView(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+      //  dd($params);
+        $transaction = $this->transactionService->getUserTransaction($params['transactionId']);
 
         if (!$transaction) {
             redirectTo("/");
@@ -29,7 +30,7 @@ class ReceiptController
 
     public function upload(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params['transactionId']);
 
         if (!$transaction) {
             redirectTo("/");
@@ -43,5 +44,41 @@ class ReceiptController
         $this->receiptService->uploadFile($file, $transaction['id']);
 
         redirectTo("/");
+    }
+
+    public function download(array $params) {
+        $transaction = $this->transactionService->getUserTransaction($params['transactionId']);
+
+        if (!$transaction) {
+            redirectTo("/");
+        }
+//        get receipt
+        $receipt = $this->receiptService->getReceipt($params['receipt']);
+
+        //compare receipt id with transaction id => should be equal
+        if ($receipt['transaction_id'] !== $transaction['id']){
+            redirectTo("/");
+        }
+
+        //logic for file in service
+        $this->receiptService->read($receipt);
+    }
+    public function delete(array $params) {
+        $transaction = $this->transactionService->getUserTransaction($params['transactionId']);
+
+        if (!$transaction) {
+            redirectTo("/");
+        }
+//        get receipt
+        $receipt = $this->receiptService->getReceipt($params('receipt'));
+
+        //compare receipt id with transaction id => should be equal
+        if ($receipt['transaction_id'] !== $transaction['id']){
+            redirectTo("/");
+        }
+
+        $this->receiptService->delete($receipt);
+
+        redirectTo('/');
     }
 }

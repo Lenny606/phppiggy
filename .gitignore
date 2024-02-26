@@ -5,3 +5,7 @@ composer.phar
 .env
 /src/App/Services/src/App/
 /public/logs/
+#ignores all files
+storage/uploads*
+#but keep gitkeep
+!storage/uploads/.gitkeep

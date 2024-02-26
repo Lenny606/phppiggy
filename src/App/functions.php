@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 //global functions
+use Framework\Http;
+
 function dd(mixed $var): void
 {
     echo "<pre>";
@@ -22,9 +24,9 @@ function escape(mixed $value): string
 }
 
 //get request, needs header, status code
-//exit stops the script to prevent errors
+//exit stops the script to prevent errors.
 function redirectTo(string $path){
     header("Location: {$path}");
-    http_response_code(302);
+    http_response_code(Http::REDIRECT_STATUS_CODE);
     exit;
 }

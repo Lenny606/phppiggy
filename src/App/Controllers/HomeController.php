@@ -38,12 +38,12 @@ class HomeController
         $page = (int)($_GET['p'] ?? 1); //default is 1, cast as integer
         $length = 3; //number of results hardcoded
         $offset = ($page - 1) * $length; //in code first page is 0
-        $searchTerm = $_GET['s'];
+        $searchTerm = $_GET['s'] ?? null;
 
         //get transactions via TransactionService and pass it to template, deconstructint results from service
         [$transactions, $transactionsCount] = $this->transactionService->getUserTransactions(length: $length, offset: $offset);
-
-        //calculate last page
+//
+//        //calculate last page
         $lastPage = ceil($transactionsCount / $length);
 
         //page Links, range() creates array
@@ -69,13 +69,13 @@ class HomeController
                     'p' => $page - 1,
                     's' => $searchTerm
                 ]),
-            'lastPage' => $lastPage,
+           'lastPage' => $lastPage,
             'nextPageQuery' => http_build_query(
                 [
                     'p' => $page + 1,
                     's' => $searchTerm
                 ]),
-            'pageLinks' => $pageLinks,
+                'pageLinks' => $pageLinks,
             'searchTerm' => $searchTerm
 
         ]);

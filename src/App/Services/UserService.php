@@ -39,7 +39,7 @@ class UserService
                 'password' => password_hash($formData['password'], PASSWORD_BCRYPT, ['cost' => 12]),
                 'age' => $formData['age'],
                 'country' => $formData['country'],
-                'social_media_url' => $formData['socialMediaUrl']
+                'social_media_url' => $formData['social_media_url']
             ]);
 
         //after registration user should be authenticated and redirected to homepage (same as login)
@@ -73,10 +73,25 @@ class UserService
 
     }
     public function logout() {
-        //delete the session
-        unset($_SESSION['user']);
+        //delete the session, with unset() method we can target specific cookie
+        //unset($_SESSION['user']);
 
-        //for extra precaution reset the session
-        session_regenerate_id();
+        //session_destroy will destroy the session + cookie
+        session_destroy();
+
+        //for extra precaution reset the session, sets new id , cookie is not destroyed
+        //session_regenerate_id();
+
+        //better way to reset ,name, value , expires (now - 3600s)
+        $params = session_get_cookie_params();
+        setcookie(
+            'PHPSESSID',
+            '',
+            time() - 3600,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly'],
+        );
     }
 }

@@ -50,11 +50,11 @@ class ValidatorService
         //validation is in Validator class
         $this->validator->validate($formData, [
             'email' => ['required', 'email'],
-            'age' => ['required', "min:18"],//custom rule : parameter
+        //    'age' => ['required', "min:18"],//custom rule : parameter
             'country' => ['required', "in:USA,Canada,Mexico"],
             'social_media_url' => ['required', 'url'],
             'password' => ['required'],
-            'confirm_password' => ['required', 'match:password'], //field as parameter
+            'confirm_pasword' => ['required', 'match:password'], //field as parameter
             'terms_of_service' => ['required'],
         ]);
     }

@@ -46,9 +46,10 @@ $db = new Database(
 );
 
 //sql query from file and calls query from cli command
+//cmd : composer phppiggy
 $sqlFile = file_get_contents("./database.sql");
 $db->query($sqlFile);
-
+echo "done";
 /*//TRANSACTION query example --- TESTING
 try {
 //    creates the transaction, everything under will be inside the transaction
