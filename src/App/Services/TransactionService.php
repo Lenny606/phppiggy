@@ -25,7 +25,7 @@ class TransactionService
           VALUES(:user_id, :description, :amount, :date)'
             ,
             [
-                'user_id' => $_SESSION['user_id'],
+                'user_id' => $_SESSION['user'],
                 'description' => $formData['description'],
                 'amount' => $formData['amount'],
                 'date' => $formatedDate
