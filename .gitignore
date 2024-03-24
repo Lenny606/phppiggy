@@ -9,3 +9,4 @@ composer.phar
 storage/uploads*
 #but keep gitkeep
 !storage/uploads/.gitkeep
+/result.txt

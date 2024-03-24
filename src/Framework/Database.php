@@ -10,7 +10,7 @@ class Database
     private PDO $connection;
     private \PDOStatement $statement;
     public function __construct(
-        string $driver,
+
         array  $config,
         string $username,
         string $password

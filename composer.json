@@ -26,5 +26,8 @@
     },
     "scripts": {
         "phppiggy": "php cli.php"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10"
     }
 }
